@@ -6,19 +6,22 @@ import (
 )
 
 func TestEval(t *testing.T) {
-	l := new(Lexer)
-	l.Init(strings.NewReader(`1 + 1`))
-	yyParse(l)
-	if actual := Eval(l.Result); actual != 2 {
-		t.Fatalf("1 + 1 should 2 but got %d", actual)
+	type c struct {
+		in  string
+		out int
 	}
-}
-
-func TestEval2(t *testing.T) {
-	l := new(Lexer)
-	l.Init(strings.NewReader(`1 + 2 * 10`))
-	yyParse(l)
-	if actual := Eval(l.Result); actual != 21 {
-		t.Fatalf("1 + 2 * 10 should 21 but got %d", actual)
+	cases := []c{
+		{in: "1 + 1", out: 2},
+		{in: "1 + 2 * 10", out: 21},
+		{in: "1 + 10 / 5", out: 3},
+	}
+	for _, r := range cases {
+		l := new(Lexer)
+		l.Init(strings.NewReader(r.in))
+		t.Logf("test: %s = %d", r.in, r.out)
+		yyParse(l)
+		if actual := Eval(l.Result); actual != r.out {
+			t.Fatalf("%s should %d but got %d", r.in, r.out, actual)
+		}
 	}
 }
