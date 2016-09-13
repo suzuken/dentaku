@@ -46,7 +46,7 @@ const yyEofCode = 1
 const yyErrCode = 2
 const yyInitialStackSize = 16
 
-//line parser.go.y:53
+//line parser.go.y:54
 
 type Lexer struct {
 	scanner.Scanner
@@ -477,12 +477,13 @@ yydefault:
 		yyDollar = yyS[yypt-1 : yypt+1]
 		//line parser.go.y:46
 		{
-			yyVAL.expr = yyDollar[1].token
+			yyVAL.expr = NumExpr{literal: yyDollar[1].token.literal}
 		}
 	case 3:
 		yyDollar = yyS[yypt-3 : yypt+1]
 		//line parser.go.y:50
 		{
+			yyVAL.expr = BinOpExpr{left: yyDollar[1].expr, right: yyDollar[3].expr, operator: '+'}
 		}
 	}
 	goto yystack /* stack new state and value */

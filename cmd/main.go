@@ -13,4 +13,5 @@ func main() {
 	l.Init(strings.NewReader(os.Args[1]))
 	dentaku.Parse(l)
 	fmt.Printf("%#v\n", l.Result)
+	fmt.Printf("%#v\n", dentaku.Eval(l.Result))
 }

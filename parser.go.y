@@ -44,10 +44,11 @@ program
 expr
     : NUMBER
     {
-        $$ = $1
+        $$ = NumExpr{literal: $1.literal}
     }
     | expr '+' expr
     {
+        $$ = BinOpExpr{left: $1, right: $3, operator: '+'}
     }
 
 %%
