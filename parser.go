@@ -39,6 +39,9 @@ var yyToknames = [...]string{
 	"$unk",
 	"NUMBER",
 	"'+'",
+	"'-'",
+	"'*'",
+	"'/'",
 }
 var yyStatenames = [...]string{}
 
@@ -46,7 +49,7 @@ const yyEofCode = 1
 const yyErrCode = 2
 const yyInitialStackSize = 16
 
-//line parser.go.y:54
+//line parser.go.y:67
 
 type Lexer struct {
 	scanner.Scanner
@@ -77,41 +80,45 @@ var yyExca = [...]int{
 	-2, 0,
 }
 
-const yyNprod = 4
+const yyNprod = 7
 const yyPrivate = 57344
 
 var yyTokenNames []string
 var yyStates []string
 
-const yyLast = 7
+const yyLast = 13
 
 var yyAct = [...]int{
 
-	4, 2, 3, 1, 0, 0, 5,
+	4, 5, 6, 7, 2, 6, 7, 3, 1, 8,
+	9, 10, 11,
 }
 var yyPact = [...]int{
 
-	-2, -1000, -5, -1000, -2, -1000,
+	3, -1000, -5, -1000, 3, 3, 3, 3, -2, -2,
+	-1000, -1000,
 }
 var yyPgo = [...]int{
 
-	0, 3, 1,
+	0, 8, 4,
 }
 var yyR1 = [...]int{
 
-	0, 1, 2, 2,
+	0, 1, 2, 2, 2, 2, 2,
 }
 var yyR2 = [...]int{
 
-	0, 1, 1, 3,
+	0, 1, 1, 3, 3, 3, 3,
 }
 var yyChk = [...]int{
 
-	-1000, -1, -2, 4, 5, -2,
+	-1000, -1, -2, 4, 5, 6, 7, 8, -2, -2,
+	-2, -2,
 }
 var yyDef = [...]int{
 
-	0, -2, 1, 2, 0, 3,
+	0, -2, 1, 2, 0, 0, 0, 0, 3, 4,
+	5, 6,
 }
 var yyTok1 = [...]int{
 
@@ -119,7 +126,7 @@ var yyTok1 = [...]int{
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-	3, 3, 3, 5,
+	3, 3, 7, 5, 3, 6, 3, 8,
 }
 var yyTok2 = [...]int{
 
@@ -468,22 +475,40 @@ yydefault:
 
 	case 1:
 		yyDollar = yyS[yypt-1 : yypt+1]
-		//line parser.go.y:39
+		//line parser.go.y:40
 		{
 			yyVAL.expr = yyDollar[1].expr
 			yylex.(*Lexer).Result = yyVAL.expr
 		}
 	case 2:
 		yyDollar = yyS[yypt-1 : yypt+1]
-		//line parser.go.y:46
+		//line parser.go.y:47
 		{
 			yyVAL.expr = NumExpr{literal: yyDollar[1].token.literal}
 		}
 	case 3:
 		yyDollar = yyS[yypt-3 : yypt+1]
-		//line parser.go.y:50
+		//line parser.go.y:51
 		{
 			yyVAL.expr = BinOpExpr{left: yyDollar[1].expr, right: yyDollar[3].expr, operator: '+'}
+		}
+	case 4:
+		yyDollar = yyS[yypt-3 : yypt+1]
+		//line parser.go.y:55
+		{
+			yyVAL.expr = BinOpExpr{left: yyDollar[1].expr, right: yyDollar[3].expr, operator: '-'}
+		}
+	case 5:
+		yyDollar = yyS[yypt-3 : yypt+1]
+		//line parser.go.y:59
+		{
+			yyVAL.expr = BinOpExpr{left: yyDollar[1].expr, right: yyDollar[3].expr, operator: '*'}
+		}
+	case 6:
+		yyDollar = yyS[yypt-3 : yypt+1]
+		//line parser.go.y:63
+		{
+			yyVAL.expr = BinOpExpr{left: yyDollar[1].expr, right: yyDollar[3].expr, operator: '/'}
 		}
 	}
 	goto yystack /* stack new state and value */

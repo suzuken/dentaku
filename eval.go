@@ -9,7 +9,16 @@ func Eval(e Expression) int {
 	case BinOpExpr:
 		left := Eval(e.(BinOpExpr).left)
 		right := Eval(e.(BinOpExpr).right)
-		return left + right
+		switch e.(BinOpExpr).operator {
+		case '+':
+			return left + right
+		case '-':
+			return left - right
+		case '*':
+			return left * right
+		case '/':
+			return left / right
+		}
 	case NumExpr:
 		i, _ := strconv.Atoi(e.(NumExpr).literal)
 		return i
