@@ -7,6 +7,7 @@ import __yyfmt__ "fmt"
 
 //line parser.go.y:3
 import "text/scanner"
+import "io"
 
 type Expression interface{}
 
@@ -24,7 +25,7 @@ type BinOpExpr struct {
 	operator    rune
 }
 
-//line parser.go.y:24
+//line parser.go.y:25
 type yySymType struct {
 	yys   int
 	expr  Expression
@@ -50,11 +51,18 @@ const yyEofCode = 1
 const yyErrCode = 2
 const yyInitialStackSize = 16
 
-//line parser.go.y:72
+//line parser.go.y:73
 
 type Lexer struct {
 	scanner.Scanner
 	Result Expression
+	w      io.Writer
+}
+
+func New(w io.Writer) *Lexer {
+	l := &Lexer{}
+	l.w = w
+	return l
 }
 
 func (l *Lexer) Lex(lval *yySymType) int {
@@ -67,7 +75,7 @@ func (l *Lexer) Lex(lval *yySymType) int {
 }
 
 func (l *Lexer) Error(e string) {
-	panic(e)
+	l.w.Write([]byte(e))
 }
 
 func Parse(l *Lexer) int {
@@ -481,44 +489,44 @@ yydefault:
 
 	case 1:
 		yyDollar = yyS[yypt-1 : yypt+1]
-		//line parser.go.y:41
+		//line parser.go.y:42
 		{
 			yyVAL.expr = yyDollar[1].expr
 			yylex.(*Lexer).Result = yyVAL.expr
 		}
 	case 2:
 		yyDollar = yyS[yypt-1 : yypt+1]
-		//line parser.go.y:48
+		//line parser.go.y:49
 		{
 			yyVAL.expr = NumExpr{literal: yyDollar[1].token.literal}
 		}
 	case 3:
 		yyDollar = yyS[yypt-3 : yypt+1]
-		//line parser.go.y:52
+		//line parser.go.y:53
 		{
 			yyVAL.expr = BinOpExpr{left: yyDollar[1].expr, right: yyDollar[3].expr, operator: '+'}
 		}
 	case 4:
 		yyDollar = yyS[yypt-3 : yypt+1]
-		//line parser.go.y:56
+		//line parser.go.y:57
 		{
 			yyVAL.expr = BinOpExpr{left: yyDollar[1].expr, right: yyDollar[3].expr, operator: '-'}
 		}
 	case 5:
 		yyDollar = yyS[yypt-3 : yypt+1]
-		//line parser.go.y:60
+		//line parser.go.y:61
 		{
 			yyVAL.expr = BinOpExpr{left: yyDollar[1].expr, right: yyDollar[3].expr, operator: '*'}
 		}
 	case 6:
 		yyDollar = yyS[yypt-3 : yypt+1]
-		//line parser.go.y:64
+		//line parser.go.y:65
 		{
 			yyVAL.expr = BinOpExpr{left: yyDollar[1].expr, right: yyDollar[3].expr, operator: '/'}
 		}
 	case 7:
 		yyDollar = yyS[yypt-3 : yypt+1]
-		//line parser.go.y:68
+		//line parser.go.y:69
 		{
 			yyVAL.expr = BinOpExpr{left: yyDollar[1].expr, right: yyDollar[3].expr, operator: '^'}
 		}

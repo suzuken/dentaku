@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	l := new(dentaku.Lexer)
+	l := dentaku.New(os.Stdout)
 	l.Init(strings.NewReader(os.Args[1]))
 	dentaku.Parse(l)
 	fmt.Printf("%#v\n", l.Result)

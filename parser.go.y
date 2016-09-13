@@ -3,6 +3,7 @@
 package dentaku
 
 import "text/scanner"
+import "io"
 
 type Expression interface{}
 
@@ -74,6 +75,13 @@ expr
 type Lexer struct {
     scanner.Scanner
     Result Expression
+    w io.Writer
+}
+
+func New(w io.Writer) *Lexer {
+    l := &Lexer{}
+    l.w = w
+    return l
 }
 
 func (l *Lexer) Lex(lval *yySymType) int {
@@ -86,7 +94,7 @@ func (l *Lexer) Lex(lval *yySymType) int {
 }
 
 func (l *Lexer) Error(e string) {
-    panic(e)
+    l.w.Write([]byte(e))
 }
 
 func Parse(l *Lexer) int {
