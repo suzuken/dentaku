@@ -32,6 +32,7 @@ type BinOpExpr struct {
 
 %left '+' '-'
 %left '*' '/'
+%left '^'
 
 %%
 
@@ -62,6 +63,10 @@ expr
     | expr '/' expr
     {
         $$ = BinOpExpr{left: $1, right: $3, operator: '/'}
+    }
+    | expr '^' expr
+    {
+        $$ = BinOpExpr{left: $1, right: $3, operator: '^'}
     }
 
 %%

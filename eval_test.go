@@ -14,6 +14,7 @@ func TestEval(t *testing.T) {
 		{in: "1 + 1", out: 2},
 		{in: "1 + 2 * 10", out: 21},
 		{in: "1 + 10 / 5", out: 3},
+		{in: "1 + 10 ^ 2", out: 101},
 	}
 	for _, r := range cases {
 		l := new(Lexer)
